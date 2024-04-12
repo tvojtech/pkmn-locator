@@ -1,0 +1,10 @@
+https://events.pokemon.com/en-us/?sort=distance&near=Prague,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Slany,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Ceske%20Budejovice,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Ostrava,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Olomouc,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Brno,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Kolin,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Pardubice,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Hradec%20Kralove,%20Czechia&filters=tournament,tcg
+https://events.pokemon.com/en-us/?sort=distance&near=Jihlava,%20Czechia&filters=tournament,tcg
