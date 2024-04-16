@@ -1,15 +1,6 @@
-import { useEffect, useState } from "react";
-
-type LocatorApiItem = {
-  name: string;
-  type: string;
-  game: string;
-  when: string;
-  address: {
-    address: string;
-    location: string;
-  };
-};
+import { Card } from "@/app/locator/card";
+import { LocatorApiItem } from "@/app/locator/types";
+import { parse } from "date-fns";
 
 const fetchData = async (): Promise<LocatorApiItem[]> => {
   const datasetsResp = await fetch(
@@ -34,7 +25,19 @@ const fetchData = async (): Promise<LocatorApiItem[]> => {
 
   const data = ((await datasetResp.json()) as LocatorApiItem[])
     .filter((d) => !!d.game && !!d.type)
-    .reduce((acc, next) => ({ ...acc, [next.name]: next }), {});
+    .filter((d) => d.type === "league_cup")
+    .map((d) => ({
+      ...d,
+      when: parse(d.when, "MMMM d, yyyy h:mma", new Date()),
+    }))
+    .sort((a, b) => a.when.getTime() - b.when.getTime())
+    .reduce(
+      (acc, next) => ({
+        ...acc,
+        [next.name]: next,
+      }),
+      {}
+    );
 
   return Object.values(data);
 };
@@ -46,14 +49,7 @@ const LocatorPage = async () => {
     <div>
       <ol>
         {data.map((item) => (
-          <li key={item.name}>
-            <div>
-              {item.type} - {item.name}
-            </div>
-            <div>{item.when}</div>
-            <div>{item.address.address}</div>
-            <div>{item.address.location}</div>
-          </li>
+          <Card key={item.name} item={item} />
         ))}
       </ol>
     </div>
