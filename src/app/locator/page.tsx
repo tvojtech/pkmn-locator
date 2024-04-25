@@ -4,7 +4,8 @@ import { parse } from "date-fns";
 
 const fetchData = async (): Promise<LocatorApiItem[]> => {
   const datasetsResp = await fetch(
-    `https://api.apify.com/v2/datasets?token=${process.env.APIFY_TOKEN}&unnamed=1`
+    `https://api.apify.com/v2/datasets?token=${process.env.APIFY_TOKEN}&unnamed=1`,
+    { next: { revalidate: 1440 } }
   );
 
   if (!datasetsResp.ok) {
@@ -16,7 +17,10 @@ const fetchData = async (): Promise<LocatorApiItem[]> => {
   } = await datasetsResp.json();
 
   const datasetResp = await fetch(
-    "https://api.apify.com/v2/datasets/" + items[items.length - 1].id + "/items"
+    "https://api.apify.com/v2/datasets/" +
+      items[items.length - 1].id +
+      "/items",
+    { next: { revalidate: 1440 } }
   );
 
   if (!datasetResp.ok) {
