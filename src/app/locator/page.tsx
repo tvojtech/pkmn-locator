@@ -1,8 +1,7 @@
 import { Card } from "@/app/locator/card";
 import { Filters } from "@/app/locator/filters";
 import { locations } from "@/app/locator/locations";
-import { Activity, ActivityData, Tag } from "@/app/locator/types";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Activity, ActivityData } from "@/app/locator/types";
 import React from "react";
 
 const fetchData = async (): Promise<Activity[]> => {
@@ -19,11 +18,6 @@ const fetchData = async (): Promise<Activity[]> => {
       return activityData
         .map((data) => data.activities)
         .reduce((acc, next) => [...acc, ...next], []);
-      // .filter(
-      //   (activity) =>
-      //     activity.tags.includes(Tag.league_cup) ||
-      //     activity.tags.includes(Tag.league_challenge)
-      // );
     });
 };
 

@@ -49,15 +49,28 @@ export const Kolin: Location = {
   latitude: 50.02732899999999,
   longitude: 15.2027277,
 };
+export const Jihlava: Location = {
+  name: "Jihlava",
+  latitude: 49.3983782,
+  longitude: 15.5870415,
+};
+export const Liberec: Location = {
+  name: "Liberec",
+  latitude: 50.76627999999999,
+  longitude: 15.0543387,
+};
 
 export const locations: Location[] = [
   Prague,
   Slany,
   CeskeBudejovice,
+  Liberec,
 
   HradecKralove,
   Pardubice,
   Kolin,
+
+  Jihlava,
 
   Ostrava,
   Olomouc,
