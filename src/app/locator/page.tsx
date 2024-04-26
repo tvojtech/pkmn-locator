@@ -1,49 +1,27 @@
 import { Card } from "@/app/locator/card";
-import { LocatorApiItem } from "@/app/locator/types";
-import { parse } from "date-fns";
+import { locations } from "@/app/locator/locations";
+import { Activity, ActivityData } from "@/app/locator/types";
 
-const fetchData = async (): Promise<LocatorApiItem[]> => {
-  const datasetsResp = await fetch(
-    `https://api.apify.com/v2/datasets?token=${process.env.APIFY_TOKEN}&unnamed=1`,
-    { next: { revalidate: 1440 } }
-  );
-
-  if (!datasetsResp.ok) {
-    throw new Error("Failed to fetch datasets");
-  }
-
-  const {
-    data: { items },
-  } = await datasetsResp.json();
-
-  const datasetResp = await fetch(
-    "https://api.apify.com/v2/datasets/" +
-      items[items.length - 1].id +
-      "/items",
-    { next: { revalidate: 1440 } }
-  );
-
-  if (!datasetResp.ok) {
-    throw new Error("Failed to fetch dataset data");
-  }
-
-  const data = ((await datasetResp.json()) as LocatorApiItem[])
-    .filter((d) => !!d.game && !!d.type)
-    .filter((d) => d.type === "league_cup")
-    .map((d) => ({
-      ...d,
-      when: parse(d.when, "MMMM d, yyyy h:mma", new Date()),
-    }))
-    .sort((a, b) => a.when.getTime() - b.when.getTime())
-    .reduce(
-      (acc, next) => ({
-        ...acc,
-        [next.name]: next,
-      }),
-      {}
-    );
-
-  return Object.values(data);
+const fetchData = async (): Promise<Activity[]> => {
+  return await Promise.all(
+    locations
+      .map(
+        (location) =>
+          `https://op-core.pokemon.com/api/v2/event_locator/search/?latitude=${location.latitude}&longitude=${location.longitude}&distance=10`
+      )
+      .map((url) => fetch(url, { next: { revalidate: 1440 } }))
+  )
+    .then((responses) => Promise.all(responses.map((resp) => resp.json())))
+    .then((activityData: ActivityData[]) => {
+      return activityData
+        .map((data) => data.activities)
+        .reduce((acc, next) => [...acc, ...next], [])
+        .filter(
+          (activity) =>
+            activity.tags.includes("league_cup") ||
+            activity.tags.includes("league_challenge")
+        );
+    });
 };
 
 const LocatorPage = async () => {
@@ -52,9 +30,13 @@ const LocatorPage = async () => {
   return (
     <div>
       <ol>
-        {data.map((item) => (
-          <Card key={item.name} item={item} />
-        ))}
+        {data
+          .sort(
+            (a, b) => new Date(a.when).getTime() - new Date(b.when).getTime()
+          )
+          .map((item) => (
+            <Card key={item.name} item={item} />
+          ))}
       </ol>
     </div>
   );

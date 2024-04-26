@@ -1,8 +1,8 @@
-import { LocatorApiItem } from "@/app/locator/types";
+import { Activity } from "@/app/locator/types";
 import { format } from "date-fns";
 import React from "react";
 
-export const Card: React.FC<{ item: LocatorApiItem }> = ({ item }) => {
+export const Card: React.FC<{ item: Activity }> = ({ item }) => {
   return (
     <li
       style={{
@@ -11,12 +11,9 @@ export const Card: React.FC<{ item: LocatorApiItem }> = ({ item }) => {
         border: "1px solid lightgrey",
       }}
     >
-      <div>
-        {item.type} - {item.name}
-      </div>
+      <div>{item.name}</div>
       <div>{format(item.when, "PPpp")}</div>
-      <div>{item.address.address}</div>
-      <div>{item.address.location}</div>
+      <div>{item.address.full_address}</div>
     </li>
   );
 };
