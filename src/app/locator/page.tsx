@@ -1,6 +1,6 @@
 import { Card } from "@/app/locator/card";
 import { locations } from "@/app/locator/locations";
-import { Activity, ActivityData } from "@/app/locator/types";
+import { Activity, ActivityData, Tag } from "@/app/locator/types";
 
 const fetchData = async (): Promise<Activity[]> => {
   return await Promise.all(
@@ -18,8 +18,8 @@ const fetchData = async (): Promise<Activity[]> => {
         .reduce((acc, next) => [...acc, ...next], [])
         .filter(
           (activity) =>
-            activity.tags.includes("league_cup") ||
-            activity.tags.includes("league_challenge")
+            activity.tags.includes(Tag.league_cup) ||
+            activity.tags.includes(Tag.league_challenge)
         );
     });
 };
@@ -35,7 +35,7 @@ const LocatorPage = async () => {
             (a, b) => new Date(a.when).getTime() - new Date(b.when).getTime()
           )
           .map((item) => (
-            <Card key={item.name} item={item} />
+            <Card key={item.guid} item={item} />
           ))}
       </ol>
     </div>

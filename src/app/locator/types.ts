@@ -1,3 +1,9 @@
+export enum Tag {
+  league_challenge = "league_challenge",
+  league_cup = "league_cup",
+  prerelease = "prerelease",
+}
+
 export interface Address {
   guid: string;
   type: string;
@@ -59,7 +65,7 @@ export interface Activity {
   activity_type: string;
   large_event_guid: string;
   league_guid: string;
-  tags: string[];
+  tags: Tag[];
   activity_format: string;
   products: string[];
   status: string;
