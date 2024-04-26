@@ -5,9 +5,8 @@ import React from "react";
 
 export const Card: React.FC<{ item: Activity }> = ({ item }) => {
   return (
-    <li
+    <div
       style={{
-        margin: 10,
         padding: 4,
         border: "1px solid lightgrey",
         width: "100%",
@@ -34,7 +33,7 @@ export const Card: React.FC<{ item: Activity }> = ({ item }) => {
       <div>
         <EventType activity={item} />
       </div>
-    </li>
+    </div>
   );
 };
 
@@ -45,8 +44,10 @@ const EventType: React.FC<{ activity: Activity }> = ({ activity }) => {
     imageUrl = "https://events.pokemon.com/images/league-challenge.png";
   } else if (activity.tags.includes(Tag.league_cup)) {
     imageUrl = "https://events.pokemon.com/images/league-cup.png";
+  } else if (activity.tags.includes(Tag.prerelease)) {
+    imageUrl = "https://events.pokemon.com/images/prerelease.png";
   } else {
     return null;
   }
-  return <Image width={100} height={100} src={imageUrl} alt={imageUrl} />;
+  return <Image width={75} height={75} src={imageUrl} alt={imageUrl} />;
 };

@@ -1,6 +1,9 @@
 import { Card } from "@/app/locator/card";
+import { Filters } from "@/app/locator/filters";
 import { locations } from "@/app/locator/locations";
 import { Activity, ActivityData, Tag } from "@/app/locator/types";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React from "react";
 
 const fetchData = async (): Promise<Activity[]> => {
   return await Promise.all(
@@ -15,29 +18,43 @@ const fetchData = async (): Promise<Activity[]> => {
     .then((activityData: ActivityData[]) => {
       return activityData
         .map((data) => data.activities)
-        .reduce((acc, next) => [...acc, ...next], [])
-        .filter(
-          (activity) =>
-            activity.tags.includes(Tag.league_cup) ||
-            activity.tags.includes(Tag.league_challenge)
-        );
+        .reduce((acc, next) => [...acc, ...next], []);
+      // .filter(
+      //   (activity) =>
+      //     activity.tags.includes(Tag.league_cup) ||
+      //     activity.tags.includes(Tag.league_challenge)
+      // );
     });
 };
 
-const LocatorPage = async () => {
+const LocatorPage: React.FC<{
+  searchParams: { "event-type": string | undefined };
+}> = async ({ searchParams }) => {
   const data = await fetchData();
+  const eventTypes = (searchParams["event-type"] ?? "")
+    .split(",")
+    .filter(Boolean);
 
   return (
-    <div>
-      <ol>
-        {data
-          .sort(
-            (a, b) => new Date(a.when).getTime() - new Date(b.when).getTime()
-          )
-          .map((item) => (
-            <Card key={item.guid} item={item} />
-          ))}
-      </ol>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+        margin: 4,
+      }}
+    >
+      <Filters />
+      {data
+        .filter(
+          (item) =>
+            eventTypes.length === 0 ||
+            item.tags.some((tag) => eventTypes.includes(tag))
+        )
+        .sort((a, b) => new Date(a.when).getTime() - new Date(b.when).getTime())
+        .map((item) => (
+          <Card key={item.guid} item={item} />
+        ))}
     </div>
   );
 };
