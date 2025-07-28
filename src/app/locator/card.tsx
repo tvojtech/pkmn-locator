@@ -41,13 +41,19 @@ const EventType: React.FC<{ activity: Activity }> = ({ activity }) => {
   let imageUrl;
 
   if (activity.tags.includes(Tag.league_challenge)) {
-    imageUrl = "https://events.pokemon.com/images/league-challenge.png";
+    imageUrl =
+      "https://events.pokemon.com/OPPlayerApp/img/OPPlayerApp.LeaguechallengeBadge.png";
   } else if (activity.tags.includes(Tag.league_cup)) {
-    imageUrl = "https://events.pokemon.com/images/league-cup.png";
+    imageUrl =
+      "https://events.pokemon.com/OPPlayerApp/img/OPPlayerApp.LeagueCupBadge.png";
   } else if (activity.tags.includes(Tag.prerelease)) {
-    imageUrl = "https://events.pokemon.com/images/prerelease.png";
+    imageUrl =
+      "https://events.pokemon.com/OPPlayerApp/img/OPPlayerApp.PrereleaseBadge.png";
   } else {
     return null;
   }
-  return <Image width={75} height={75} src={imageUrl} alt={imageUrl} />;
+  const altText = imageUrl
+    .replace("https://events.pokemon.com/OPPlayerApp/img/OPPlayerApp.", "")
+    .replace("Badge.png", "");
+  return <Image width={75} height={75} src={imageUrl} alt={altText} />;
 };
